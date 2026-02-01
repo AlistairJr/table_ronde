@@ -93,7 +93,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
                           ],
                         ),
                         child: const Icon(
-                          Icons.chat_bubble_rounded,
+                          Icons.group_rounded,
                           size: 60,
                           color: Colors.white,
                         ),
@@ -101,7 +101,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
                       const SizedBox(height: 24),
                       // App Name
                       Text(
-                        'HiChat',
+                        'TableRonde',
                         style: AppTheme.headingLarge.copyWith(
                           fontSize: 40,
                           fontWeight: FontWeight.w800,
@@ -109,7 +109,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        'Connect with everyone',
+                        'Votre écosystème communautaire',
                         style: AppTheme.bodyMedium,
                       ),
                     ],

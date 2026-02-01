@@ -10,6 +10,10 @@ import 'screens/pin_setup_screen.dart';
 import 'screens/fingerprint_setup_screen.dart';
 import 'screens/home_screen.dart';
 import 'screens/chat_screen.dart';
+import 'screens/social_screen.dart';
+import 'screens/finance_screen.dart';
+import 'screens/education_screen.dart';
+import 'screens/games_screen.dart';
 import 'utils/app_theme.dart';
 
 void main() {
@@ -18,20 +22,20 @@ void main() {
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]);
-  runApp(const HiChatApp());
+  runApp(const TableRondeApp());
 }
 
-class HiChatApp extends StatelessWidget {
-  const HiChatApp({super.key});
+class TableRondeApp extends StatelessWidget {
+  const TableRondeApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'HiChat',
+      title: 'TableRonde',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
-      themeMode: ThemeMode.dark, // Use dark theme by default for Discord feel
+      themeMode: ThemeMode.dark,
       initialRoute: '/',
       routes: {
         '/': (context) => const SplashScreen(),
@@ -44,6 +48,10 @@ class HiChatApp extends StatelessWidget {
         '/fingerprint-setup': (context) => const FingerprintSetupScreen(),
         '/home': (context) => const HomeScreen(),
         '/chat': (context) => const ChatScreen(),
+        '/social': (context) => const SocialScreen(),
+        '/finance': (context) => const FinanceScreen(),
+        '/education': (context) => const EducationScreen(),
+        '/games': (context) => const GamesScreen(),
       },
     );
   }

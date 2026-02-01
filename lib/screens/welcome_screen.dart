@@ -73,13 +73,13 @@ class _WelcomeScreenState extends State<WelcomeScreen> with TickerProviderStateM
                 child: Column(
                   children: [
                     Text(
-                      'Welcome to HiChat!',
+                      'Bienvenue sur TableRonde !',
                       style: AppTheme.headingLarge,
                       textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 12),
                     Text(
-                      'The best messenger app of the\ncentury for you and your family!',
+                      'L\'écosystème complet pour votre\ncommunauté : social, finance, éducation et jeux !',
                       style: AppTheme.bodyMedium,
                       textAlign: TextAlign.center,
                     ),
@@ -104,7 +104,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> with TickerProviderStateM
                         style: ElevatedButton.styleFrom(
                           backgroundColor: AppTheme.primaryBlue,
                         ),
-                        child: Text('Get Started', style: AppTheme.buttonText),
+                        child: Text('Commencer', style: AppTheme.buttonText),
                       ),
                     ),
                     const SizedBox(height: 16),
@@ -113,7 +113,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> with TickerProviderStateM
                         Navigator.pushNamed(context, '/login');
                       },
                       child: Text(
-                        'Sign In',
+                        'Se connecter',
                         style: AppTheme.bodyLarge.copyWith(
                           color: AppTheme.primaryBlue,
                           fontWeight: FontWeight.w600,
