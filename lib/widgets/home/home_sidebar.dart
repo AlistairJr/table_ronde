@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../models/chat_model.dart';
 import '../../../utils/app_theme.dart';
 
 class HomeSidebar extends StatelessWidget {
@@ -6,12 +7,20 @@ class HomeSidebar extends StatelessWidget {
   final int selectedIndex;
   final Function(int) onIndexChanged;
 
-  const HomeSidebar({
+  HomeSidebar({
     super.key,
     this.isMobile = false,
     required this.selectedIndex,
     required this.onIndexChanged,
   });
+
+  final List<ChatModel> _privateMessages = [
+    ChatModel(id: 'pm1', name: 'T4zor', lastMessage: '...', isOnline: false),
+    ChatModel(id: 'pm2', name: 'Ralphon', lastMessage: '...', isOnline: true),
+    ChatModel(id: 'pm3', name: 'Kevin', lastMessage: '...', isOnline: true),
+    ChatModel(id: 'pm4', name: 'Tedy', lastMessage: '...', isOnline: false),
+    ChatModel(id: 'pm5', name: 'Tk-Porky', lastMessage: '...', isOnline: false),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -126,18 +135,12 @@ class HomeSidebar extends StatelessWidget {
           
           // Message list
           Expanded(
-            child: ListView(
+            child: ListView.builder(
               padding: const EdgeInsets.symmetric(horizontal: 8),
-              children: [
-                _buildMessageItem(context, 'TZ-Game', 'T', true),
-                _buildMessageItem(context, 'Not A Loli Zone', 'N', true),
-                _buildMessageItem(context, 'NYAJ<oo>', 'N', false),
-                _buildMessageItem(context, 'T4zor', 'T', false),
-                _buildMessageItem(context, 'Ralphon', 'R', true),
-                _buildMessageItem(context, 'Fadil', 'F', true),
-                _buildMessageItem(context, 'Tedy', 'T', false),
-                _buildMessageItem(context, 'Ryan', 'R', false),
-              ],
+              itemCount: _privateMessages.length,
+              itemBuilder: (context, index) {
+                return _buildMessageItem(context, _privateMessages[index]);
+              },
             ),
           ),
           
@@ -245,10 +248,10 @@ class HomeSidebar extends StatelessWidget {
     );
   }
 
-  Widget _buildMessageItem(BuildContext context, String name, String initial, bool online) {
+  Widget _buildMessageItem(BuildContext context, ChatModel chat) {
     return InkWell(
       onTap: () {
-        Navigator.pushNamed(context, '/social');
+        Navigator.pushNamed(context, '/chat', arguments: chat);
       },
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
@@ -266,7 +269,7 @@ class HomeSidebar extends StatelessWidget {
                   ),
                   child: Center(
                     child: Text(
-                      initial,
+                      chat.name.substring(0, 1),
                       style: AppTheme.bodyMedium.copyWith(
                         color: AppTheme.primaryBlue,
                         fontWeight: FontWeight.w600,
@@ -274,7 +277,7 @@ class HomeSidebar extends StatelessWidget {
                     ),
                   ),
                 ),
-                if (online)
+                if (chat.isOnline)
                   Positioned(
                     bottom: 0,
                     right: 0,
@@ -293,7 +296,7 @@ class HomeSidebar extends StatelessWidget {
             const SizedBox(width: 12),
             Expanded(
               child: Text(
-                name,
+                chat.name,
                 style: AppTheme.bodyMedium.copyWith(
                   color: Colors.white,
                   fontWeight: FontWeight.w500,

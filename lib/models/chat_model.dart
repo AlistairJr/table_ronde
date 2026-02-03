@@ -1,33 +1,59 @@
-class ChatModel {
-  final String name;
-  final String message;
-  final String time;
-  final int unreadCount;
-  final bool isOnline;
-  final String? avatarUrl;
-
-  ChatModel({
-    required this.name,
-    required this.message,
-    required this.time,
-    this.unreadCount = 0,
-    this.isOnline = false,
-    this.avatarUrl,
-  });
-}
+enum MessageType { text, sticker, gif, image, video, document }
 
 class MessageModel {
-  final String text;
+  final String id;
+  String text;
   final bool isSentByMe;
   final DateTime timestamp;
-  final bool isRead;
-  final String? imageUrl;
+  bool isRead;
+  final MessageType type;
+  final String? attachmentUrl; // image / video / document local or network path
+  final String? attachmentName; // used for documents
+  final String? stickerUrl; // sticker asset path
+  final String? gifUrl; // gif asset or network URL
+  final String? replyToId; // id of the message being replied to
+  bool isEdited;
+  bool isDeleted;
 
   MessageModel({
-    required this.text,
+    String? id,
+    this.text = '',
     required this.isSentByMe,
     required this.timestamp,
     this.isRead = false,
-    this.imageUrl,
+    this.type = MessageType.text,
+    this.attachmentUrl,
+    this.attachmentName,
+    this.stickerUrl,
+    this.gifUrl,
+    this.replyToId,
+    this.isEdited = false,
+    this.isDeleted = false,
+  }) : id = id ?? DateTime.now().microsecondsSinceEpoch.toString();
+}
+
+class ChatModel {
+  final String id;
+  final String name;
+  final String? avatarUrl;
+  final bool isOnline;
+  final String? lastMessage;
+  final DateTime? lastMessageTime;
+  final int unreadCount;
+  final String? bio;
+  final String? phone;
+  final String? username;
+
+  ChatModel({
+    required this.id,
+    required this.name,
+    this.avatarUrl,
+    this.isOnline = false,
+    this.lastMessage,
+    this.lastMessageTime,
+    this.unreadCount = 0,
+    this.bio,
+    this.phone,
+    this.username,
   });
 }

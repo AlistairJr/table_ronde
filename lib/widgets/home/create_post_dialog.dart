@@ -1,8 +1,10 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import '../../utils/app_theme.dart';
 
 class CreatePostDialog extends StatefulWidget {
-  final Function(String, String?) onPostCreated;
+  final Function(String, File?) onPostCreated;
 
   const CreatePostDialog({
     super.key,
@@ -15,8 +17,19 @@ class CreatePostDialog extends StatefulWidget {
 
 class _CreatePostDialogState extends State<CreatePostDialog> {
   final _contentController = TextEditingController();
-  String? _selectedImage;
+  File? _selectedImage;
   bool _isLoading = false;
+  final ImagePicker _picker = ImagePicker();
+
+  Future<void> _pickImage(ImageSource source) async {
+    final pickedFile = await _picker.pickImage(source: source);
+
+    if (pickedFile != null) {
+      setState(() {
+        _selectedImage = File(pickedFile.path);
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -135,7 +148,7 @@ class _CreatePostDialogState extends State<CreatePostDialog> {
                       children: [
                         ClipRRect(
                           borderRadius: BorderRadius.circular(12),
-                          child: Image.asset(
+                          child: Image.file(
                             _selectedImage!,
                             height: 150,
                             width: double.infinity,
@@ -267,7 +280,7 @@ class _CreatePostDialogState extends State<CreatePostDialog> {
               style: AppTheme.bodyMedium.copyWith(color: Colors.white),
             ),
             onTap: () {
-              setState(() => _selectedImage = 'assets/images/test.png');
+              _pickImage(ImageSource.gallery);
               Navigator.pop(context);
             },
           ),
@@ -278,7 +291,7 @@ class _CreatePostDialogState extends State<CreatePostDialog> {
               style: AppTheme.bodyMedium.copyWith(color: Colors.white),
             ),
             onTap: () {
-              setState(() => _selectedImage = 'assets/images/test2.png');
+              _pickImage(ImageSource.camera);
               Navigator.pop(context);
             },
           ),

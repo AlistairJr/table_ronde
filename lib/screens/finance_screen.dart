@@ -2,90 +2,27 @@ import 'package:flutter/material.dart';
 import '../utils/app_theme.dart';
 
 class FinanceScreen extends StatefulWidget {
-  const FinanceScreen({super.key});
+  final TabController tabController;
+
+  const FinanceScreen({
+    super.key,
+    required this.tabController,
+  });
 
   @override
   State<FinanceScreen> createState() => _FinanceScreenState();
 }
 
-class _FinanceScreenState extends State<FinanceScreen> with SingleTickerProviderStateMixin {
-  late TabController _tabController;
-
-  @override
-  void initState() {
-    super.initState();
-    _tabController = TabController(length: 3, vsync: this);
-  }
-
-  @override
-  void dispose() {
-    _tabController.dispose();
-    super.dispose();
-  }
-
+class _FinanceScreenState extends State<FinanceScreen> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppTheme.backgroundDark,
-      appBar: AppBar(
-        backgroundColor: AppTheme.cardDark,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () => Navigator.pop(context),
-        ),
-        title: Text(
-          'Finance & Épargne',
-          style: AppTheme.headingMedium.copyWith(fontSize: 20),
-        ),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.history),
-            onPressed: () {},
-          ),
-          IconButton(
-            icon: const Icon(Icons.more_vert),
-            onPressed: () {},
-          ),
-        ],
-        bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(48),
-          child: Container(
-            color: AppTheme.cardDark,
-            child: TabBar(
-              controller: _tabController,
-              indicatorColor: AppTheme.successColor,
-              indicatorWeight: 3,
-              labelColor: Colors.white,
-              unselectedLabelColor: AppTheme.textSecondary,
-              labelStyle: AppTheme.bodyMedium.copyWith(
-                fontWeight: FontWeight.w600,
-                fontSize: 14,
-              ),
-              tabs: const [
-                Tab(text: 'SOLDE'),
-                Tab(text: 'TRANSACTIONS'),
-                Tab(text: 'ÉPARGNE'),
-              ],
-            ),
-          ),
-        ),
-      ),
-      body: TabBarView(
-        controller: _tabController,
-        children: [
-          _buildBalanceTab(),
-          _buildTransactionsTab(),
-          _buildSavingsTab(),
-        ],
-      ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
-          _showTransactionDialog();
-        },
-        backgroundColor: AppTheme.successColor,
-        icon: const Icon(Icons.add, color: Colors.white),
-        label: const Text('Transaction', style: TextStyle(color: Colors.white)),
-      ),
+    return TabBarView(
+      controller: widget.tabController,
+      children: [
+        _buildBalanceTab(),
+        _buildTransactionsTab(),
+        _buildSavingsTab(),
+      ],
     );
   }
 
@@ -489,65 +426,6 @@ class _FinanceScreenState extends State<FinanceScreen> with SingleTickerProvider
           ),
         ],
       ),
-    );
-  }
-
-  void _showTransactionDialog() {
-    showModalBottomSheet(
-      context: context,
-      backgroundColor: AppTheme.surfaceDark,
-      isScrollControlled: true,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
-      ),
-      builder: (context) {
-        return Padding(
-          padding: EdgeInsets.only(
-            bottom: MediaQuery.of(context).viewInsets.bottom,
-          ),
-          child: Container(
-            padding: const EdgeInsets.all(24),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Nouvelle transaction',
-                  style: AppTheme.headingMedium.copyWith(color: Colors.white),
-                ),
-                const SizedBox(height: 24),
-                Row(
-                  children: [
-                    Expanded(
-                      child: ElevatedButton.icon(
-                        onPressed: () {},
-                        icon: const Icon(Icons.send),
-                        label: const Text('Envoyer'),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: AppTheme.primaryBlue,
-                          padding: const EdgeInsets.symmetric(vertical: 16),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: ElevatedButton.icon(
-                        onPressed: () {},
-                        icon: const Icon(Icons.call_received),
-                        label: const Text('Recevoir'),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: AppTheme.successColor,
-                          padding: const EdgeInsets.symmetric(vertical: 16),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        );
-      },
     );
   }
 }

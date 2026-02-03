@@ -6,14 +6,15 @@ import 'screens/login_screen.dart';
 import 'screens/signup_screen.dart';
 import 'screens/otp_verification_screen.dart';
 import 'screens/profile_setup_screen.dart';
-import 'screens/pin_setup_screen.dart';
-import 'screens/fingerprint_setup_screen.dart';
-import 'screens/home_screen.dart';
+//import 'screens/pin_setup_screen.dart';
+//import 'screens/fingerprint_setup_screen.dart';
+import 'screens/main_screen.dart';
+//import 'screens/home_screen.dart';
 import 'screens/chat_screen.dart';
 import 'screens/social_screen.dart';
-import 'screens/finance_screen.dart';
-import 'screens/education_screen.dart';
-import 'screens/games_screen.dart';
+//import 'screens/finance_screen.dart';
+//import 'screens/education_screen.dart';
+//import 'screens/games_screen.dart';
 import 'utils/app_theme.dart';
 
 void main() {
@@ -44,14 +45,14 @@ class TableRondeApp extends StatelessWidget {
         '/signup': (context) => const SignupScreen(),
         '/otp': (context) => const OTPVerificationScreen(),
         '/profile-setup': (context) => const ProfileSetupScreen(),
-        '/pin-setup': (context) => const PinSetupScreen(),
-        '/fingerprint-setup': (context) => const FingerprintSetupScreen(),
-        '/home': (context) => const HomeScreen(),
+        //'/pin-setup': (context) => const PinSetupScreen(),
+        //'/fingerprint-setup': (context) => const FingerprintSetupScreen(),
+        '/home': (context) => const MainScreen(),
         '/chat': (context) => const ChatScreen(),
         '/social': (context) => const SocialScreen(),
-        '/finance': (context) => const FinanceScreen(),
-        '/education': (context) => const EducationScreen(),
-        '/games': (context) => const GamesScreen(),
+        //'/finance': (context) => const FinanceScreen(),
+        //'/education': (context) => const EducationScreen(),
+        //'/games': (context) => const GamesScreen(),
       },
     );
   }

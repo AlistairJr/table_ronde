@@ -14,23 +14,26 @@ class _SocialScreenState extends State<SocialScreen> with SingleTickerProviderSt
   
   final List<ChatModel> _chats = [
     ChatModel(
+      id: '1',
       name: 'Jean Dupont',
-      message: 'Salut ! On se voit ce soir ?',
-      time: '10:25',
+      lastMessage: 'Salut ! On se voit ce soir ?',
+      lastMessageTime: DateTime.now().subtract(const Duration(minutes: 35)),
       unreadCount: 2,
       isOnline: true,
     ),
     ChatModel(
+      id: '2',
       name: 'Marie Martin',
-      message: 'Super ! À tout à l\'heure 😊',
-      time: '09:16',
+      lastMessage: 'Super ! À tout à l\'heure 😊',
+      lastMessageTime: DateTime.now().subtract(const Duration(hours: 1)),
       unreadCount: 3,
       isOnline: true,
     ),
     ChatModel(
+      id: '3',
       name: 'Groupe TableRonde',
-      message: 'Paul: N\'oubliez pas la réunion',
-      time: 'Hier',
+      lastMessage: 'Paul: N\'oubliez pas la réunion',
+      lastMessageTime: DateTime.now().subtract(const Duration(days: 1)),
       unreadCount: 5,
       isOnline: false,
     ),
@@ -191,7 +194,7 @@ class _SocialScreenState extends State<SocialScreen> with SingleTickerProviderSt
               ),
             ),
             Text(
-              chat.time,
+              chat.lastMessageTime != null ? '${chat.lastMessageTime!.hour}:${chat.lastMessageTime!.minute.toString().padLeft(2, '0')}' : '',
               style: AppTheme.bodySmall.copyWith(
                 color: AppTheme.textSecondary,
                 fontSize: 11,
@@ -203,7 +206,7 @@ class _SocialScreenState extends State<SocialScreen> with SingleTickerProviderSt
           children: [
             Expanded(
               child: Text(
-                chat.message,
+                chat.lastMessage ?? '',
                 style: AppTheme.bodyMedium.copyWith(
                   color: AppTheme.textSecondary,
                 ),

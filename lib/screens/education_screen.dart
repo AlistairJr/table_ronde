@@ -2,90 +2,27 @@ import 'package:flutter/material.dart';
 import '../utils/app_theme.dart';
 
 class EducationScreen extends StatefulWidget {
-  const EducationScreen({super.key});
+  final TabController tabController;
+
+  const EducationScreen({
+    super.key,
+    required this.tabController,
+  });
 
   @override
   State<EducationScreen> createState() => _EducationScreenState();
 }
 
-class _EducationScreenState extends State<EducationScreen> with SingleTickerProviderStateMixin {
-  late TabController _tabController;
-
-  @override
-  void initState() {
-    super.initState();
-    _tabController = TabController(length: 3, vsync: this);
-  }
-
-  @override
-  void dispose() {
-    _tabController.dispose();
-    super.dispose();
-  }
-
+class _EducationScreenState extends State<EducationScreen> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppTheme.backgroundDark,
-      appBar: AppBar(
-        backgroundColor: AppTheme.cardDark,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () => Navigator.pop(context),
-        ),
-        title: Text(
-          'Espace Pédagogique',
-          style: AppTheme.headingMedium.copyWith(fontSize: 20),
-        ),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.calendar_today),
-            onPressed: () {},
-          ),
-          IconButton(
-            icon: const Icon(Icons.more_vert),
-            onPressed: () {},
-          ),
-        ],
-        bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(48),
-          child: Container(
-            color: AppTheme.cardDark,
-            child: TabBar(
-              controller: _tabController,
-              indicatorColor: AppTheme.warningColor,
-              indicatorWeight: 3,
-              labelColor: Colors.white,
-              unselectedLabelColor: AppTheme.textSecondary,
-              labelStyle: AppTheme.bodyMedium.copyWith(
-                fontWeight: FontWeight.w600,
-                fontSize: 14,
-              ),
-              tabs: const [
-                Tab(text: 'DEVOIRS'),
-                Tab(text: 'DOCUMENTS'),
-                Tab(text: 'NOTES'),
-              ],
-            ),
-          ),
-        ),
-      ),
-      body: TabBarView(
-        controller: _tabController,
-        children: [
-          _buildHomeworkTab(),
-          _buildDocumentsTab(),
-          _buildNotesTab(),
-        ],
-      ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
-          _showAddDialog();
-        },
-        backgroundColor: AppTheme.warningColor,
-        icon: const Icon(Icons.add, color: Colors.white),
-        label: const Text('Ajouter', style: TextStyle(color: Colors.white)),
-      ),
+    return TabBarView(
+      controller: widget.tabController,
+      children: [
+        _buildHomeworkTab(),
+        _buildDocumentsTab(),
+        _buildNotesTab(),
+      ],
     );
   }
 
@@ -437,69 +374,6 @@ class _EducationScreenState extends State<EducationScreen> with SingleTickerProv
             overflow: TextOverflow.ellipsis,
           ),
         ],
-      ),
-    );
-  }
-
-  void _showAddDialog() {
-    showModalBottomSheet(
-      context: context,
-      backgroundColor: AppTheme.surfaceDark,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
-      ),
-      builder: (context) {
-        return Container(
-          padding: const EdgeInsets.all(24),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'Ajouter',
-                style: AppTheme.headingMedium.copyWith(color: Colors.white),
-              ),
-              const SizedBox(height: 24),
-              _buildAddOption(Icons.assignment, 'Nouveau devoir', AppTheme.warningColor),
-              _buildAddOption(Icons.upload_file, 'Importer document', AppTheme.primaryBlue),
-              _buildAddOption(Icons.note_add, 'Créer une note', Colors.green),
-            ],
-          ),
-        );
-      },
-    );
-  }
-
-  Widget _buildAddOption(IconData icon, String label, Color color) {
-    return InkWell(
-      onTap: () => Navigator.pop(context),
-      child: Container(
-        margin: const EdgeInsets.only(bottom: 12),
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: AppTheme.cardDark,
-          borderRadius: BorderRadius.circular(12),
-        ),
-        child: Row(
-          children: [
-            Container(
-              padding: const EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                color: color.withOpacity(0.15),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Icon(icon, color: color, size: 24),
-            ),
-            const SizedBox(width: 16),
-            Text(
-              label,
-              style: AppTheme.bodyLarge.copyWith(
-                color: Colors.white,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-          ],
-        ),
       ),
     );
   }

@@ -204,7 +204,7 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
                     child: ElevatedButton(
                       onPressed: () {
                         if (_formKey.currentState!.validate()) {
-                          Navigator.pushNamed(context, '/pin-setup');
+                          Navigator.pushNamed(context, '/home');
                         }
                       },
                       child: Text('Continue', style: AppTheme.buttonText),

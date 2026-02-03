@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../utils/app_theme.dart';
 
 class GamesScreen extends StatefulWidget {
-  const GamesScreen({super.key});
+  const GamesScreen({super.key, required TabController tabController});
 
   @override
   State<GamesScreen> createState() => _GamesScreenState();

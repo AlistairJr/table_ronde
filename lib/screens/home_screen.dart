@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import '../utils/app_theme.dart';
 import '../widgets/home/home_sidebar.dart';
@@ -6,6 +7,8 @@ import '../widgets/home/home_feed.dart';
 import '../widgets/home/home_top_bar.dart';
 import '../widgets/home/announcements_feed.dart';
 import '../widgets/home/create_post_dialog.dart';
+import '../widgets/home/members_list.dart';
+import '../widgets/home/activities_feed.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -15,7 +18,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  int _selectedIndex = 0;
+  int _subPageIndex = 0;
   
   final List<Map<String, dynamic>> _feedPosts = [
     {
@@ -90,7 +93,7 @@ class _HomeScreenState extends State<HomeScreen> {
     showDialog(
       context: context,
       builder: (context) => CreatePostDialog(
-        onPostCreated: (content, image) {
+        onPostCreated: (content, File? image) {
           setState(() {
             _feedPosts.insert(0, {
               'author': 'Vous',
@@ -142,9 +145,9 @@ class _HomeScreenState extends State<HomeScreen> {
           backgroundColor: AppTheme.cardDark,
           child: HomeSidebar(
             isMobile: true,
-            selectedIndex: _selectedIndex,
+            selectedIndex: _subPageIndex,
             onIndexChanged: (index) {
-              setState(() => _selectedIndex = index);
+              setState(() => _subPageIndex = index);
               Navigator.pop(context);
             },
           ),
@@ -154,23 +157,6 @@ class _HomeScreenState extends State<HomeScreen> {
           child: HomeRightSidebar(isMobile: true),
         ),
         body: _buildBody(),
-        bottomNavigationBar: BottomNavigationBar(
-          currentIndex: _selectedIndex,
-          onTap: (index) => setState(() => _selectedIndex = index),
-          type: BottomNavigationBarType.fixed,
-          backgroundColor: AppTheme.cardDark,
-          selectedItemColor: AppTheme.primaryBlue,
-          unselectedItemColor: AppTheme.textSecondary,
-          showSelectedLabels: true,
-          showUnselectedLabels: true,
-          items: const [
-            BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Accueil'),
-            BottomNavigationBarItem(icon: Icon(Icons.people), label: 'Chat'),
-            BottomNavigationBarItem(icon: Icon(Icons.attach_money), label: 'Finance'),
-            BottomNavigationBarItem(icon: Icon(Icons.school), label: 'Éduc'),
-            BottomNavigationBarItem(icon: Icon(Icons.sports_esports), label: 'Jeux'),
-          ],
-        ),
         floatingActionButton: FloatingActionButton(
           onPressed: _showCreatePostDialog,
           backgroundColor: AppTheme.primaryBlue,
@@ -179,73 +165,57 @@ class _HomeScreenState extends State<HomeScreen> {
       );
     }
 
-    return Scaffold(
-      backgroundColor: AppTheme.backgroundDark,
-      body: Row(
-        children: [
-          HomeSidebar(
-            selectedIndex: _selectedIndex,
-            onIndexChanged: (index) => setState(() => _selectedIndex = index),
-          ),
-          Expanded(
-            child: Column(
-              children: [
-                const HomeTopBar(),
-                Expanded(
-                  child: Row(
-                    children: [
-                      Expanded(child: _buildBody()),
-                      const HomeRightSidebar(),
-                    ],
+    return Row(
+      children: [
+        HomeSidebar(
+          selectedIndex: _subPageIndex,
+          onIndexChanged: (index) => setState(() => _subPageIndex = index),
+        ),
+        Expanded(
+          child: Stack(
+            children: [
+              Column(
+                children: [
+                  HomeTopBar(onCreatePost: _showCreatePostDialog),
+                  Expanded(
+                    child: Row(
+                      children: [
+                        Expanded(child: _buildBody()),
+                        const HomeRightSidebar(),
+                      ],
+                    ),
                   ),
+                ],
+              ),
+              Positioned(
+                bottom: 24,
+                right: 24,
+                child: FloatingActionButton(
+                  onPressed: _showCreatePostDialog,
+                  backgroundColor: AppTheme.primaryBlue,
+                  child: const Icon(Icons.add, color: Colors.white),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
-        ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _showCreatePostDialog,
-        backgroundColor: AppTheme.primaryBlue,
-        child: const Icon(Icons.add, color: Colors.white),
-      ),
+        ),
+      ],
     );
   }
 
   Widget _buildBody() {
-    switch (_selectedIndex) {
+    switch (_subPageIndex) {
       case 0:
         return HomeFeed(posts: _feedPosts);
       case 1:
         return AnnouncementsFeed(announcements: _announcements);
       case 2:
-        return _buildPlaceholderPage('Membres');
+        return const MembersList();
       case 3:
-        return _buildPlaceholderPage('Activités');
+        return const ActivitiesFeed();
       default:
         return HomeFeed(posts: _feedPosts);
     }
   }
 
-  Widget _buildPlaceholderPage(String title) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(
-            Icons.construction,
-            size: 64,
-            color: AppTheme.textSecondary,
-          ),
-          const SizedBox(height: 16),
-          Text(
-            'Page $title en développement',
-            style: AppTheme.headingMedium.copyWith(
-              color: AppTheme.textSecondary,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
 }

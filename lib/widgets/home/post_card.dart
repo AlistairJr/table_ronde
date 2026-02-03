@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import '../../../utils/app_theme.dart';
 
@@ -43,6 +44,7 @@ class _PostCardState extends State<PostCard> {
 
   @override
   Widget build(BuildContext context) {
+    final imageUrl = widget.post['imageUrl'];
     return Container(
       margin: const EdgeInsets.only(bottom: 1),
       padding: const EdgeInsets.all(20),
@@ -135,24 +137,39 @@ class _PostCardState extends State<PostCard> {
             ),
           ),
           
-          if (widget.post['imageUrl'] != null) ...[
+          if (imageUrl != null) ...[
             const SizedBox(height: 16),
             ClipRRect(
               borderRadius: BorderRadius.circular(12),
-              child: Image.asset(
-                widget.post['imageUrl'],
-                fit: BoxFit.cover,
-                width: double.infinity,
-                errorBuilder: (context, error, stackTrace) {
-                  return Container(
-                    height: 200,
-                    color: AppTheme.surfaceDark,
-                    child: const Center(
-                      child: Icon(Icons.broken_image, size: 48, color: Colors.white24),
+              child: imageUrl is String
+                  ? Image.asset(
+                      imageUrl,
+                      fit: BoxFit.cover,
+                      width: double.infinity,
+                      errorBuilder: (context, error, stackTrace) {
+                        return Container(
+                          height: 200,
+                          color: AppTheme.surfaceDark,
+                          child: const Center(
+                            child: Icon(Icons.broken_image, size: 48, color: Colors.white24),
+                          ),
+                        );
+                      },
+                    )
+                  : Image.file(
+                      imageUrl,
+                      fit: BoxFit.cover,
+                      width: double.infinity,
+                      errorBuilder: (context, error, stackTrace) {
+                        return Container(
+                          height: 200,
+                          color: AppTheme.surfaceDark,
+                          child: const Center(
+                            child: Icon(Icons.broken_image, size: 48, color: Colors.white24),
+                          ),
+                        );
+                      },
                     ),
-                  );
-                },
-              ),
             ),
           ],
           
