@@ -9,7 +9,7 @@ class HomeFeed extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      padding: const EdgeInsets.symmetric(vertical: 16),
+      padding: EdgeInsets.zero,
       itemCount: posts.length,
       itemBuilder: (context, index) {
         return PostCard(post: posts[index]);

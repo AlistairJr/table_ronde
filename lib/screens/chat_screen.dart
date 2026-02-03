@@ -66,7 +66,21 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    _chat = ModalRoute.of(context)!.settings.arguments as ChatModel;
+    final args = ModalRoute.of(context)!.settings.arguments as ChatModel;
+    _chat = ChatModel(
+      id: args.id,
+      name: args.name,
+      avatarUrl: args.avatarUrl,
+      isOnline: args.isOnline,
+      lastMessage: args.lastMessage,
+      lastMessageTime: args.lastMessageTime,
+      unreadCount: args.unreadCount,
+      bio: args.bio ?? 'Description de bio vide',
+      phone: args.phone,
+      username: args.username ?? '@kev',
+      createdAt: args.createdAt ?? DateTime(2026, 2, 1),
+      currentActivity: args.currentActivity ?? 'Joue à Chess.com',
+    );
   }
 
   void _onTextChanged() {

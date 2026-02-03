@@ -9,195 +9,268 @@ class UserProfileSheet extends StatelessWidget {
 
   const UserProfileSheet({super.key, required this.chat});
 
-  // Helper to get correct image provider (asset vs network)
   ImageProvider? _getImageProvider(String? url) {
     if (url == null || url.isEmpty) return null;
-
-    if (url.startsWith('assets/')) {
-      return AssetImage(url);
-    }
-
-    if (url.startsWith('http://') || url.startsWith('https://')) {
-      return NetworkImage(url);
-    }
-
-    if (url.startsWith('/')) {
-      return FileImage(File(url));
-    }
-
+    if (url.startsWith('assets/')) return AssetImage(url);
+    if (url.startsWith('http')) return NetworkImage(url);
+    if (url.startsWith('/')) return FileImage(File(url));
     return AssetImage(url);
+  }
+
+  String _formatDate(DateTime? date) {
+    if (date == null) return 'Unknown';
+    final months = [
+      'janv.',
+      'févr.',
+      'mars',
+      'avr.',
+      'mai',
+      'juin',
+      'juil.',
+      'août',
+      'sept.',
+      'oct.',
+      'nov.',
+      'déc.'
+    ];
+    return '${date.day} ${months[date.month - 1]} ${date.year}';
   }
 
   @override
   Widget build(BuildContext context) {
+    // Banner Color
+    const bannerColor =
+        AppTheme.primaryBlue; // Or custom purple/blue from image
+
     return Container(
-      decoration: BoxDecoration(
+      height: MediaQuery.of(context).size.height * 0.85,
+      decoration: const BoxDecoration(
         color: AppTheme.cardDark,
-        borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
+        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
       ),
-      child: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(24),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.center,
+      child: Stack(
+        children: [
+          Column(
             children: [
-              // ── drag handle ──
+              // ── Banner ────────────────────────────────────────────────
               Container(
-                width: 40,
-                height: 4,
-                decoration: BoxDecoration(
-                  color: AppTheme.textSecondary.withOpacity(0.3),
-                  borderRadius: BorderRadius.circular(2),
+                height: 120,
+                width: double.infinity,
+                decoration: const BoxDecoration(
+                  color: bannerColor,
+                  borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+                ),
+                alignment: Alignment.topRight,
+                padding: const EdgeInsets.all(16),
+                child: GestureDetector(
+                  onTap: () => Navigator.pop(context),
+                  child: Container(
+                    padding: const EdgeInsets.all(6),
+                    decoration: BoxDecoration(
+                      color: Colors.black.withOpacity(0.2),
+                      shape: BoxShape.circle,
+                    ),
+                    child:
+                        const Icon(Icons.close, color: Colors.white, size: 20),
+                  ),
                 ),
               ),
-              const SizedBox(height: 20),
 
-              // ── avatar + online badge ──
-              Stack(
-                alignment: Alignment.bottomRight,
-                children: [
-                  CircleAvatar(
-                    radius: 50,
+              // ── Body ──────────────────────────────────────────────────
+              Expanded(
+                child: Container(
+                  color: AppTheme.cardDark, // Dark background
+                  padding: const EdgeInsets.fromLTRB(
+                      16, 60, 16, 16), // Top padding for avatar
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // Name & Handle
+                        Text(
+                          chat.name,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        if (chat.username != null)
+                          Text(
+                            chat.username!,
+                            style: const TextStyle(
+                              color: AppTheme.textSecondary,
+                              fontSize: 14,
+                            ),
+                          ),
+                        const SizedBox(height: 16),
+
+                        // "Voir le profil complet" Button
+                        SizedBox(
+                          width: double.infinity,
+                          child: ElevatedButton(
+                            onPressed: () {
+                              // TODO: Navigate to full profile
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: AppTheme.chatBubbleIncoming,
+                              foregroundColor: Colors.white,
+                              elevation: 0,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(4),
+                              ),
+                              padding: const EdgeInsets.symmetric(vertical: 12),
+                            ),
+                            child: const Text('Voir le profil complet',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 13)),
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+
+                        // ── "À PROPOS DE MOI" Section ─────────────────
+                        Container(
+                          width: double.infinity,
+                          padding: const EdgeInsets.all(12),
+                          decoration: BoxDecoration(
+                            color: AppTheme.surfaceDark,
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'À PROPOS DE MOI',
+                                style: TextStyle(
+                                  color: Colors.white.withOpacity(0.7),
+                                  fontSize: 11,
+                                  fontWeight: FontWeight.w800,
+                                ),
+                              ),
+                              const SizedBox(height: 8),
+                              Text(
+                                chat.bio ?? 'Description de bio vide',
+                                style: const TextStyle(
+                                  color: AppTheme.textPrimary,
+                                  fontSize: 13,
+                                ),
+                              ),
+                              const SizedBox(height: 16),
+                              Text(
+                                'CRÉÉ LE',
+                                style: TextStyle(
+                                  color: Colors.white.withOpacity(0.7),
+                                  fontSize: 11,
+                                  fontWeight: FontWeight.w800,
+                                ),
+                              ),
+                              const SizedBox(height: 4),
+                              Text(
+                                _formatDate(chat.createdAt),
+                                style: const TextStyle(
+                                  color: AppTheme.textPrimary,
+                                  fontSize: 13,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+
+                        // ── "ACTIVITÉ ACTUELLE" Section ───────────────
+                        if (chat.currentActivity != null)
+                          Container(
+                            width: double.infinity,
+                            padding: const EdgeInsets.all(12),
+                            decoration: BoxDecoration(
+                              color: AppTheme.surfaceDark,
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'ACTIVITÉ ACTUELLE',
+                                  style: TextStyle(
+                                    color: Colors.white.withOpacity(0.7),
+                                    fontSize: 11,
+                                    fontWeight: FontWeight.w800,
+                                  ),
+                                ),
+                                const SizedBox(height: 8),
+                                Row(
+                                  children: [
+                                    const Icon(Icons.gamepad,
+                                        color: Colors.white, size: 20),
+                                    const SizedBox(width: 8),
+                                    Expanded(
+                                      child: Text(
+                                        chat.currentActivity!,
+                                        style: const TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 13,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+
+          // ── Floating Avatar ───────────────────────────────────────────
+          Positioned(
+            top: 70, // 120 (banner) - 50 (radius) + shift down
+            left: 20,
+            child: Stack(
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(6), // Border thickness
+                  decoration: const BoxDecoration(
+                    color: AppTheme.cardDark, // Match background
+                    shape: BoxShape.circle,
+                  ),
+                  child: CircleAvatar(
+                    radius: 40,
+                    backgroundColor: Colors.grey[800],
                     backgroundImage: _getImageProvider(chat.avatarUrl),
                     child: chat.avatarUrl == null || chat.avatarUrl!.isEmpty
                         ? Text(chat.name[0],
                             style: const TextStyle(
-                                fontSize: 40, color: Colors.white))
+                                fontSize: 32, color: Colors.white))
                         : null,
-                    backgroundColor: AppTheme.primaryBlue.withOpacity(0.4),
                   ),
-                  if (chat.isOnline)
-                    Container(
-                      width: 20,
-                      height: 20,
-                      decoration: BoxDecoration(
-                        color: AppTheme.onlineGreen,
+                ),
+                if (chat.isOnline)
+                  Positioned(
+                    bottom: 0,
+                    right: 0,
+                    child: Container(
+                      width: 28,
+                      height: 28,
+                      decoration: const BoxDecoration(
+                        color: AppTheme.cardDark, // Border
                         shape: BoxShape.circle,
-                        border: Border.all(color: AppTheme.cardDark, width: 3),
+                      ),
+                      padding: const EdgeInsets.all(4),
+                      child: Container(
+                        decoration: const BoxDecoration(
+                          color: AppTheme.onlineGreen,
+                          shape: BoxShape.circle,
+                        ),
                       ),
                     ),
-                ],
-              ),
-              const SizedBox(height: 16),
-
-              // ── name ──
-              Text(
-                chat.name,
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              const SizedBox(height: 4),
-
-              // ── online / offline status ──
-              Text(
-                chat.isOnline ? 'Online' : 'Last seen recently',
-                style: TextStyle(
-                  color: chat.isOnline
-                      ? AppTheme.onlineGreen
-                      : AppTheme.textSecondary,
-                  fontSize: 14,
-                ),
-              ),
-              const SizedBox(height: 16),
-
-              // ── divider ──
-              const Divider(color: AppTheme.surfaceDark, height: 1),
-              const SizedBox(height: 16),
-
-              // ── info rows ──
-              if (chat.username != null)
-                _infoRow(Icons.tag, 'Username', chat.username!),
-              if (chat.phone != null)
-                _infoRow(Icons.phone, 'Phone', chat.phone!),
-              if (chat.bio != null)
-                _infoRow(Icons.info_outline, 'Bio', chat.bio!),
-
-              const SizedBox(height: 20),
-
-              // ── action buttons ──
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  _actionButton(context, Icons.phone, 'Call', () {
-                    Navigator.pop(context);
-                    // TODO: launch tel: URI
-                  }),
-                  _actionButton(context, Icons.message_outlined, 'Message', () {
-                    Navigator.pop(context);
-                    // already in chat — just close the sheet
-                  }),
-                  _actionButton(context, Icons.block, 'Block', () {
-                    Navigator.pop(context);
-                    // TODO: implement block logic
-                  }, isDestructive: true),
-                ],
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  // ── helpers ──────────────────────────────────────────────────────────────
-
-  Widget _infoRow(IconData icon, String label, String value) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 6),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Icon(icon, color: AppTheme.textSecondary, size: 20),
-          const SizedBox(width: 12),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                label,
-                style: const TextStyle(
-                    color: AppTheme.textSecondary, fontSize: 12),
-              ),
-              Text(
-                value,
-                style: const TextStyle(color: Colors.white, fontSize: 15),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _actionButton(
-    BuildContext context,
-    IconData icon,
-    String label,
-    VoidCallback onTap, {
-    bool isDestructive = false,
-  }) {
-    final color = isDestructive ? Colors.redAccent : AppTheme.primaryBlue;
-    return GestureDetector(
-      onTap: onTap,
-      child: Column(
-        children: [
-          Container(
-            width: 52,
-            height: 52,
-            decoration: BoxDecoration(
-              color: color.withOpacity(0.15),
-              borderRadius: BorderRadius.circular(26),
+                  ),
+              ],
             ),
-            child: Icon(icon, color: color, size: 24),
-          ),
-          const SizedBox(height: 6),
-          Text(
-            label,
-            style: TextStyle(
-                color: color, fontSize: 13, fontWeight: FontWeight.w600),
           ),
         ],
       ),

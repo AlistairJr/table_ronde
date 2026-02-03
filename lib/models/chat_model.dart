@@ -46,6 +46,8 @@ class ChatModel {
   final String? bio;
   final String? phone;
   final String? username;
+  final DateTime? createdAt;
+  final String? currentActivity;
 
   ChatModel({
     required this.id,
@@ -58,5 +60,7 @@ class ChatModel {
     this.bio,
     this.phone,
     this.username,
+    this.createdAt,
+    this.currentActivity,
   });
 }

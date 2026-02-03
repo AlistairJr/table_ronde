@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../models/gif_model.dart';
+import '../../../utils/app_theme.dart';
 
 /// Grid view for displaying local stickers
 class StickerGridView extends StatelessWidget {
@@ -78,7 +79,7 @@ class _StickerGridItem extends StatelessWidget {
       onTap: onTap,
       child: Container(
         decoration: BoxDecoration(
-          color: const Color(0xFF1E2A30),
+          color: AppTheme.cardDark,
           borderRadius: BorderRadius.circular(8),
           border: Border.all(
             color: Colors.white.withOpacity(0.1),
@@ -92,7 +93,7 @@ class _StickerGridItem extends StatelessWidget {
             fit: BoxFit.cover,
             errorBuilder: (context, error, stackTrace) {
               return Container(
-                color: const Color(0xFF1E2A30),
+                color: AppTheme.cardDark,
                 child: Center(
                   child: Text(
                     sticker.thumbEmoji,

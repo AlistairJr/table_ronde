@@ -73,7 +73,7 @@ class _GifStickerPickerSheetState extends State<GifStickerPickerSheet>
     return Container(
       height: MediaQuery.of(context).size.height * 0.6,
       decoration: BoxDecoration(
-        color: const Color(0xFF0B141A), // Dark background like WhatsApp
+        color: AppTheme.surfaceDark,
         borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
         boxShadow: [
           BoxShadow(
@@ -100,14 +100,14 @@ class _GifStickerPickerSheetState extends State<GifStickerPickerSheet>
                     emojiViewConfig: EmojiViewConfig(
                       columns: 8,
                       emojiSizeMax: 32 * 1.0,
-                      backgroundColor: const Color(0xFF0B141A),
+                      backgroundColor: AppTheme.surfaceDark,
                       buttonMode: ButtonMode.MATERIAL,
                     ),
                     categoryViewConfig: const CategoryViewConfig(
                       initCategory: Category.RECENT,
-                      backgroundColor: Color(0xFF0B141A),
+                      backgroundColor: AppTheme.surfaceDark,
                       indicatorColor: AppTheme.primaryBlue,
-                      iconColor: Colors.grey,
+                      iconColor: AppTheme.textSecondary,
                       iconColorSelected: AppTheme.primaryBlue,
                       backspaceColor: AppTheme.primaryBlue,
                     ),
@@ -144,7 +144,7 @@ class _GifStickerPickerSheetState extends State<GifStickerPickerSheet>
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
       decoration: const BoxDecoration(
-        border: Border(bottom: BorderSide(color: Color(0xFF1E2A30))),
+        border: Border(bottom: BorderSide(color: AppTheme.cardDark)),
       ),
       child: Column(
         children: [
@@ -153,7 +153,7 @@ class _GifStickerPickerSheetState extends State<GifStickerPickerSheet>
             Container(
               height: 40,
               decoration: BoxDecoration(
-                color: const Color(0xFF1E2A30),
+                color: AppTheme.cardDark,
                 borderRadius: BorderRadius.circular(20),
               ),
               child: TextField(
@@ -191,16 +191,16 @@ class _GifStickerPickerSheetState extends State<GifStickerPickerSheet>
           // Tab Bar
           TabBar(
             controller: _tabController,
-            indicatorColor: const Color(0xFF00A884),
+            indicatorColor: AppTheme.primaryBlue,
             indicatorWeight: 3,
-            labelColor: const Color(0xFF00A884),
+            labelColor: AppTheme.primaryBlue,
             unselectedLabelColor: Colors.white.withOpacity(0.5),
             labelStyle: const TextStyle(fontWeight: FontWeight.bold),
             onTap: (index) {
               // FocusScope.of(context).unfocus(); // Optional
             },
             tabs: const [
-              Tab(text: 'Emoji'),
+              Tab(text: 'Simley'),
               Tab(text: 'GIF'),
               Tab(text: 'Stickers'),
             ],
@@ -214,7 +214,7 @@ class _GifStickerPickerSheetState extends State<GifStickerPickerSheet>
     return Container(
       height: 48,
       decoration: const BoxDecoration(
-        border: Border(top: BorderSide(color: Color(0xFF1E2A30))),
+        border: Border(top: BorderSide(color: AppTheme.cardDark)),
       ),
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
@@ -231,10 +231,9 @@ class _GifStickerPickerSheetState extends State<GifStickerPickerSheet>
               decoration: BoxDecoration(
                 border: isSelected
                     ? const Border(
-                        top: BorderSide(color: Color(0xFF00A884), width: 2))
+                        top: BorderSide(color: AppTheme.primaryBlue, width: 2))
                     : null,
-                color:
-                    isSelected ? const Color(0xFF1E2A30) : Colors.transparent,
+                color: isSelected ? AppTheme.cardDark : Colors.transparent,
               ),
               child: Text(
                 category,

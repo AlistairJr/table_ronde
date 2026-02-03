@@ -120,6 +120,7 @@ class _HomeScreenState extends State<HomeScreen> {
       return Scaffold(
         backgroundColor: AppTheme.backgroundDark,
         appBar: AppBar(
+          
           backgroundColor: AppTheme.cardDark,
           title: Text('TableRonde', style: AppTheme.headingMedium.copyWith(fontSize: 18)),
           leading: Builder(
