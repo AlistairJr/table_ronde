@@ -15,6 +15,8 @@ class MessageModel {
   bool isEdited;
   bool isDeleted;
 
+  final Map<String, int> reactions;
+
   MessageModel({
     String? id,
     this.text = '',
@@ -29,6 +31,7 @@ class MessageModel {
     this.replyToId,
     this.isEdited = false,
     this.isDeleted = false,
+    this.reactions = const {},
   }) : id = id ?? DateTime.now().microsecondsSinceEpoch.toString();
 }
 

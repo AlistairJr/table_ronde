@@ -1,24 +1,30 @@
 name: tableronde_app
 description: Écosystème communautaire complet - Social, Finance, Éducation, Jeux
-publish_to: 'none'
+publish_to: "none"
 version: 1.0.0+1
 
 environment:
-  sdk: '>=3.0.0 <4.0.0'
+  sdk: ">=3.0.0 <4.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
-  
+
   # UI & Theming
   google_fonts: ^8.0.0
-  
+
   # Icons
   cupertino_icons: ^1.0.2
-  image_picker: ^1.1.2
+  image_picker: ^1.0.4
 
   #File Picker
-  file_picker: ^10.3.10
+  file_picker: ^8.0.0
+  emoji_picker_flutter: ^2.0.0
+  http: ^1.1.0
+  cached_network_image: ^3.3.0
+
+  #video player
+  video_player: ^2.5.1
 
 dev_dependencies:
   flutter_test:
@@ -27,7 +33,7 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
-  
+
   # Assets
   assets:
     - assets/fonts/

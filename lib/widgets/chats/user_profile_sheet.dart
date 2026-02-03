@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import '../../models/chat_model.dart';
 import '../../utils/app_theme.dart';
@@ -6,6 +8,25 @@ class UserProfileSheet extends StatelessWidget {
   final ChatModel chat;
 
   const UserProfileSheet({super.key, required this.chat});
+
+  // Helper to get correct image provider (asset vs network)
+  ImageProvider? _getImageProvider(String? url) {
+    if (url == null || url.isEmpty) return null;
+
+    if (url.startsWith('assets/')) {
+      return AssetImage(url);
+    }
+
+    if (url.startsWith('http://') || url.startsWith('https://')) {
+      return NetworkImage(url);
+    }
+
+    if (url.startsWith('/')) {
+      return FileImage(File(url));
+    }
+
+    return AssetImage(url);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,16 +58,13 @@ class UserProfileSheet extends StatelessWidget {
                 alignment: Alignment.bottomRight,
                 children: [
                   CircleAvatar(
-                    backgroundImage: chat.avatarUrl != null && chat.avatarUrl!.isNotEmpty
-                        ? NetworkImage(chat.avatarUrl!)
-                        : null,
+                    radius: 50,
+                    backgroundImage: _getImageProvider(chat.avatarUrl),
                     child: chat.avatarUrl == null || chat.avatarUrl!.isEmpty
-                        ? Text(
-                            chat.name[0],
-                            style: const TextStyle(fontSize: 36, color: Colors.white),
-                          )
+                        ? Text(chat.name[0],
+                            style: const TextStyle(
+                                fontSize: 40, color: Colors.white))
                         : null,
-                    radius: 52,
                     backgroundColor: AppTheme.primaryBlue.withOpacity(0.4),
                   ),
                   if (chat.isOnline)
@@ -78,7 +96,9 @@ class UserProfileSheet extends StatelessWidget {
               Text(
                 chat.isOnline ? 'Online' : 'Last seen recently',
                 style: TextStyle(
-                  color: chat.isOnline ? AppTheme.onlineGreen : AppTheme.textSecondary,
+                  color: chat.isOnline
+                      ? AppTheme.onlineGreen
+                      : AppTheme.textSecondary,
                   fontSize: 14,
                 ),
               ),
@@ -138,7 +158,8 @@ class UserProfileSheet extends StatelessWidget {
             children: [
               Text(
                 label,
-                style: const TextStyle(color: AppTheme.textSecondary, fontSize: 12),
+                style: const TextStyle(
+                    color: AppTheme.textSecondary, fontSize: 12),
               ),
               Text(
                 value,
@@ -175,7 +196,8 @@ class UserProfileSheet extends StatelessWidget {
           const SizedBox(height: 6),
           Text(
             label,
-            style: TextStyle(color: color, fontSize: 13, fontWeight: FontWeight.w600),
+            style: TextStyle(
+                color: color, fontSize: 13, fontWeight: FontWeight.w600),
           ),
         ],
       ),
